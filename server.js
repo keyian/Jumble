@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8080;
 
 const routes = require('./routes/api.js');
 
-mongoose.connect(process.env.DB_URI || 'mongodb://localhost/nuUnder5', {
+mongoose.connect(process.env.DB_URI || 'mongodb://localhost/jumble', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
