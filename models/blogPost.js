@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const BlogPostSchema = new Schema({
   title: String,
   body: String,
+  xLoc: Number,
+  yLoc: Number,
   date: {
     type: String,
     default: Date.now()
