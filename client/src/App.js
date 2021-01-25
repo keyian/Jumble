@@ -1,16 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+
 import './App.css';
-import Post from './components/Post.js';
-
-
 
 class App extends React.Component {
 
   state = {
     title: '',
     body: '',
-    posts: [],
+    posts: []
   };
 
   componentDidMount = () => {
@@ -21,8 +19,7 @@ class App extends React.Component {
     axios.get('/api')
       .then((response) => {
         const data = response.data;
-        this.setState({ posts: data});
-        // this.generateRandomPosition(this.state.posts.length);
+        this.setState({ posts: data });
         console.log('Data has been received');
       })
       .catch(() => {
@@ -41,14 +38,11 @@ class App extends React.Component {
   submit = (event) => {
     event.preventDefault();
 
-    //object to be POST'd
     const payload = {
       title: this.state.title,
-      body: this.state.body,
-      xLoc: Math.random()*5000,
-      yLoc: Math.random()*5000
+      body: this.state.body
     };
-    //use axios to POST
+    
     axios({
       url: '/api/save',
       method: 'POST',
@@ -56,14 +50,11 @@ class App extends React.Component {
       })
       .then(() => {
         console.log('Data has been sent to the server');
-        //reset contents of textboxes
         this.resetUserInputs();
-        //get the blogpost list again
         this.getBlogPost();
       })
       .catch((e) => {
-        //spit this out 
-        console.log("Axios error called in submit function, server error: ", e);
+        console.log("Internal server error: ", e);
       });
   };
 
@@ -73,11 +64,15 @@ class App extends React.Component {
       body: ''
     });
   };
-  
+
   displayBlogPost = (posts) => {
     if(!posts.length) return null;
+
     return posts.map((post, index) => (
-      <Post key={index} className="blog-post__display" title={post.title} body={post.body} xLoc={post.xLoc} yLoc={post.yLoc} />
+      <div className="blog-post__display" key={index}>
+        <h3>{post.title}</h3>
+        <p>{post.body}</p>
+      </div>
     ));
   }
 
@@ -88,7 +83,6 @@ class App extends React.Component {
     //JSX
     return(
       <div className="app">
-        <Post name="something" />
         <header>jumble</header>
         <form onSubmit={this.submit}>
           <div className="form-input">
@@ -106,9 +100,10 @@ class App extends React.Component {
 
           <button>Submit</button>
         </form>
-        {this.displayBlogPost(this.state.posts)}
+        <div className="blog-">
+          {this.displayBlogPost(this.state.posts)}
+        </div>
       </div>
-      
     );
   }
 }
